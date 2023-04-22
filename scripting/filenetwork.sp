@@ -34,6 +34,8 @@ char CurrentlySending[MAXPLAYERS+1][PLATFORM_MAX_PATH];
 // Requesting
 ArrayList RequestListing;
 
+EngineVersion g_EngineVersion;
+
 methodmap CNetChan
 {
     public CNetChan(int client)
@@ -47,15 +49,16 @@ methodmap CNetChan
     }
     public int RequestFile(const char[] filename)
     {
-        return SDKCall(SDKRequestFile, this, filename);
+        if(g_EngineVersion == Engine_CSGO) //CS:GO has a 2nd param for RequestFile.
+            return SDKCall(SDKRequestFile, this, filename, false);
+        else
+            return SDKCall(SDKRequestFile, this, filename);       
     }
     public bool IsFileInWaitingList(const char[] filename)
     {
         return SDKCall(SDKIsFileInWaitingList, this, filename);
     }
 }
-
-EngineVersion g_EngineVersion;
 
 public Plugin myinfo =
 {
@@ -129,6 +132,9 @@ public void OnPluginStart()
     StartPrepSDKCall(SDKCall_Raw);
     PrepSDKCall_SetFromConf(gamedata, SDKConf_Signature, "CNetChan::RequestFile");
     PrepSDKCall_AddParameter(SDKType_String, SDKPass_Pointer);
+    if(g_EngineVersion == Engine_CSGO)
+        PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_ByValue);
+
     PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_ByValue);
     SDKRequestFile = EndPrepSDKCall();
     if(!SDKRequestFile)
@@ -277,7 +283,6 @@ public void OnClientDisconnect_Post(int client)
 public MRESReturn OnFileReceived(Address address, DHookParam param)
 {
     int id = param.Get(2);
-
     CNetChan chan;
 
     chan = SDKCall(SDKGetNetChannel, address);
