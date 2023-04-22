@@ -183,7 +183,7 @@
             {
                 "library"	"engine"
                 "windows"	"\x8B\x81\x1C\x02\x00\x00\xC3"
-		    "linux"       "55\x89\xE5\x8B\x45\x08\x5D\x8B\x80\x0C\x02\x00\x00\xC3"
+		    "linux"     "\x55\x89\xE5\x8B\x45\x08\x5D\x8B\x80\x0C\x02\x00\x00\xC3"
                 // Good Luck
             }
             "CGameClient::FileDenied"
