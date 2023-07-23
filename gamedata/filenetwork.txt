@@ -44,7 +44,9 @@
             "CNetChan::RequestFile"
             {
                 "library"	"engine"
-                "linux"		"@_ZN8CNetChan11RequestFileEPKc"
+		"linux"		"\x55\x31\xC0\x89\xE5\x53\x8B\x55\x08\x8B\x5D\x0C\x8B\x4D\x10\x39\x8C\xC2\xA4\x00\x00\x00" 
+		// cant use base words, need full sig for linux.
+		//"@_ZN11CGameClient12FileReceivedEPKcj"
                 "windows"	"\x55\x8B\xEC\x83\xEC\x14\x53\x8B\xD9\x56\x89\x5D\xF4"
                 // "RequestFile: %s (ID %i)\n"
             }
